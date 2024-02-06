@@ -15,5 +15,9 @@ def decidePipeline(Map configMap) {
         case 'nodejsEKS':
             nodejsEKS(configMap)
             break
+        
+        default:
+            error "Application is not recognized"
+            break
     }
 }
