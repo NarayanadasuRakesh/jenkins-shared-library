@@ -42,13 +42,13 @@ def call(Map configMap) {
                     '''
                 }
             }
-            /*stage('Sonar scan') {
+            stage('Sonar scan') {
                 steps {
                     sh '''
-                        sonar-scanner
+                        echo "command to scan sonar-scanner"
                     '''
                 }
-            }*/
+            }
             stage('Build') {
                 steps {
                     sh '''
