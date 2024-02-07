@@ -53,7 +53,7 @@ def call(Map configMap) {
                 steps {
                     sh '''
                         ls -la
-                        zip -q -r catalogue.zip ./* -x ".git" -x "*.zip"
+                        zip -q -r ${configMap.component}.zip ./* -x ".git" -x "*.zip"
                         ls -ltr
                     ''' 
                 }
@@ -63,16 +63,17 @@ def call(Map configMap) {
                     nexusArtifactUploader(
                         nexusVersion: 'nexus3',
                         protocol: 'http',
-                        nexusUrl: "${env.nexusURL}",
+                        nexusUrl: pipelineGlobals.nexusURL(), // Using pipeline Globals
+                        //nexusUrl: "${env.nexusURL}",
                         //nexusUrl: "${params.nexusURL}",
                         groupId: 'com.roboshop',
                         version: "${packageVersion}", //Updates nexus repository with new sematic version
-                        repository: 'catalogue',
+                        repository: "${configMap.component}",
                         credentialsId: 'nexus-auth', //Congifure inside manage credentials section
                         artifacts: [
-                            [artifactId: 'catalogue',
+                            [artifactId: "${configMap.component}",
                             classifier: '',
-                            file: 'catalogue.zip',
+                            file: "${configMap.component}.zip",
                             type: 'zip']
                         ]
                     )
@@ -90,7 +91,7 @@ def call(Map configMap) {
                             string(name: 'version', value: "${packageVersion}"),
                             string(name: 'environment', value: "${environment}")
                         ]
-                        build job: "catalogue-deploy", wait: true, parameters:params //triggers catalogue-deploy job
+                        build job: "../${configMap.component}-deploy", wait: true, parameters:params //triggers app component job
                     }
                 }
             }
