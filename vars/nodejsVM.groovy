@@ -29,33 +29,33 @@ def call(Map configMap) {
             }
             stage('Install dependencies') {
                 steps {     //Install nodejs in agent/node
-                    sh '''
+                    sh """
                         ls -la
                         npm install
-                    '''
+                    """
                 }
             }
             stage('Unit tests') {
                 steps {
-                    sh '''
+                    sh """
                         echo "Unit tests will run here"
-                    '''
+                    """
                 }
             }
             stage('Sonar scan') {
                 steps {
-                    sh '''
+                    sh """
                         echo "command to scan sonar-scanner"
-                    '''
+                    """
                 }
             }
             stage('Build') {
                 steps {
-                    sh '''
+                    sh """
                         ls -la
                         zip -q -r ${configMap.component}.zip ./* -x ".git" -x "*.zip"
                         ls -ltr
-                    ''' 
+                    """ 
                 }
             }
             stage('upload artifact') { //Nexus Artifact Uploader plugin
