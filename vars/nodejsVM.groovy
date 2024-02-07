@@ -82,7 +82,7 @@ def call(Map configMap) {
             stage('Trigger-deploy-job') {
                 when {
                     expression {
-                        "${params.Deploy}" == 'true'
+                        params.Deploy
                     }
                 }
                 steps {
